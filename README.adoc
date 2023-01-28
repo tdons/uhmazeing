@@ -1,0 +1,57 @@
+= uhmazeing
+
+An amazing program that generates mazes.
+
+== Building 
+
+[source,shell]
+$ make
+
+== Example usage
+
+[source,shell]
+----
+$ # Use 0 as a random seed (default is random).  Verbose output.
+$ ./mz -s0 -v
+seed = 0
+generate: dfs
+print: compact
+┌─────────────────┬─────┬───┬─────────┐
+│ ┌─┬─────┬─────╴ ├───╴ │ ╷ ╵ ┌─┐ ┌─╴ │
+│ ╵ │ ┌─┐ ╵ ┌─────┘ ╶───┘ ├───┘ │ │ ╶─┤
+│ ┌─┘ │ └───┤ ╶─────┬─────┘ ╶───┤ ├─╴ │
+│ │ ┌─┘ ╷ ┌─┴─────┐ │ ┌─────┬─╴ │ └─┐ │
+│ │ └─┐ │ │ ╷ ┌───┘ │ └───┐ │ ╶─┼─╴ │ │
+│ └─┐ │ └─┘ │ ╵ ╶───┼───╴ ╵ ├─╴ │ ╶─┴─┤
+├─┐ │ └─┐ ┌─┴─┬───┐ └───────┘ ╷ └───┐ │
+│ │ ├─┐ │ │ ╷ ╵ ╷ │ ┌─────┬─╴ ├─────┤ │
+│ ╵ ╵ └─┴─┘ ├───┘ └─┘ ┌─╴ └───┘ ┌─╴ ╵ │
+└───────────┴─────────┴─────────┴─────┘
+----
+
+[source,shell]
+----
+$ # Generate a large maze (25,000,000 cells) but don't print it to see how the generation methods perform
+$ time ./mz -d5000 -gdfs -onull
+real	0m1.578s
+$ time ./mz -d5000 -gkruskal -onull
+real	0m7.858s
+----
+
+== Options
+
+`-g` specify method used to `--generate` the maze, either "dfs" (default) or "kruskal"
+
+`-d` specify both `--dimensions`, the width and height of the maze (in cells)
+
+`-w` specify `--width` (in cells)
+
+`-h` specify `--height` (in cells)
+
+`-o` method used to print the maze to standard `--output`, either "compact" (default), "simple", "null", or "pretty".
+
+`-s` specify the `--seed` for the prng, defaults to a random seed
+
+`-v` print `--verbose` output to standard error
+
+`-V` print the `--version` of the program
