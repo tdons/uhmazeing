@@ -9,6 +9,7 @@
 #include "generate.h"
 #include "grid.h"
 #include "out_ascii.h"
+#include "path.h"
 
 #ifndef GIT_VERSION
 #	define GIT_VERSION "<unknown>"
@@ -30,20 +31,23 @@ enum output {
 
 static enum generate generate_method = dfs;
 static enum output output_method = compact;
+static bool output_method_override = false;
 static uint64_t seed = 0;
 static uint32_t width = 19;
 static uint32_t height = 10;
 static int verbose_flag;
+static int with_path_flag;
 
 static struct option long_options[] = {
-	{"dimensions", required_argument, 0,            'd'},
-	{"generate",   required_argument, 0,            'g'},
-	{"width",      required_argument, 0,            'w'},
-	{"height",     required_argument, 0,            'h'},
-	{"output",     required_argument, 0,            'o'},
-	{"seed",       required_argument, 0,            's'},
-	{"verbose",    no_argument,       &verbose_flag,  1},
-	{"version",    no_argument,       0,            'V'},
+	{"dimensions", required_argument, 0,               'd'},
+	{"generate",   required_argument, 0,               'g'},
+	{"width",      required_argument, 0,               'w'},
+	{"height",     required_argument, 0,               'h'},
+	{"output",     required_argument, 0,               'o'},
+	{"with-path",  no_argument,       &with_path_flag, 'p'},
+	{"seed",       required_argument, 0,               's'},
+	{"verbose",    no_argument,       &verbose_flag,     1},
+	{"version",    no_argument,       0,               'V'},
 	{0, 0, 0, 0}
 };
 
@@ -56,7 +60,7 @@ int main(int argc, char *argv[])
 	long n;
 	do {
 		int curopt = optind;
-		c = getopt_long(argc, argv, "d:g:w:h:o:s:vV", long_options, &option_index);
+		c = getopt_long(argc, argv, "d:g:w:h:o:ps:vV", long_options, &option_index);
 		switch (c) {
 		case 'g':
 			if (strcmp("dfs", optarg) == 0) {
@@ -84,6 +88,7 @@ int main(int argc, char *argv[])
 			}
 			break;
 		case 'o':
+			output_method_override = true;
 			if (strcmp("simple", optarg) == 0) {
 				output_method = simple;
 			} else if (strcmp("compact", optarg) == 0) {
@@ -96,6 +101,9 @@ int main(int argc, char *argv[])
 				fprintf(stderr, "invalid output method, choose from \"simple\", \"compact\", and \"pretty\"\n");
 				return 1;
 			}
+			break;
+		case 'p':
+			with_path_flag = 1;
 			break;
 		case 's':
 			seed = strtoull(optarg, &end, 16);
@@ -115,6 +123,14 @@ int main(int argc, char *argv[])
 			return 1;
 		}
 	} while (c != -1);
+
+	if (with_path_flag && !output_method_override) {
+		output_method = pretty;
+	}
+
+	if (with_path_flag && output_method_override && output_method == compact) {
+		fprintf(stderr, "warning: output method \"compact\" will not display the path, to see the path choose \"simple\" or \"pretty\" as output method\n");
+	}
 
 	if (verbose_flag) {
 		fprintf(stderr, "seed = %llx\n", seed);
@@ -141,13 +157,22 @@ int main(int argc, char *argv[])
 		break;
 	}
 
+	// Solve
+	struct mz_path_t *path = 0;
+	if (with_path_flag) {
+		path = mz_dial(g);
+		if (verbose_flag) {
+			fprintf(stderr, "path_length = %u\n", mz_path_length(path));
+		}
+	}
+
 	// Print
 	switch (output_method) {
 	case simple:
 		if (verbose_flag) {
 			fprintf(stderr, "print = simple\n");
 		}
-		mz_out_ascii_simple(g);
+		mz_out_ascii_simple(g, path);
 		break;
 	case compact:
 		if (verbose_flag) {
@@ -159,7 +184,7 @@ int main(int argc, char *argv[])
 		if (verbose_flag) {
 			fprintf(stderr, "print = pretty\n");
 		}
-		mz_out_ascii_boxchars(g);
+		mz_out_ascii_boxchars(g, path);
 		break;
 	case null: /* no-op */ break;
 	}

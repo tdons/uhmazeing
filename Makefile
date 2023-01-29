@@ -2,8 +2,8 @@
 NAME    := mz 
 
 # Sources
-SOURCE_FILES := generate.c grid.c out_ascii.c \
-                permutation.c random.c union_find.c
+SOURCE_FILES := generate.c grid.c out_ascii.c path.c \
+                permutation.c pq.c random.c union_find.c
 SOURCES := $(patsubst %,src/%,$(SOURCE_FILES))
 OBJECTS := $(patsubst %,build/%,$(SOURCE_FILES:.c=.o))
 
