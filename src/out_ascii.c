@@ -20,27 +20,27 @@ static const char *boxchars[] = {
 #define HORIZONTAL_INDEX 5
 #define VERTICAL_INDEX 10
 
-void mzn_out_ascii_simple(const struct mzn_grid_t *g)
+void mz_out_ascii_simple(const struct mz_grid_t *g)
 {
 	for (uint32_t y = 0; y < g->H; y++) {
 		printf("+");
 		for (uint32_t x = 0; x < g->W; x++) {  /* Top of cell */
-			printf(mzn_grid_has_wall(g, y, x, north) ? "---+" : "   +");
+			printf(mz_grid_has_wall(g, y, x, north) ? "---+" : "   +");
 		}
-		printf("\n%c", mzn_grid_has_wall(g, y, 0, west) ? '|' : ' ');
+		printf("\n%c", mz_grid_has_wall(g, y, 0, west) ? '|' : ' ');
 		for (uint32_t x = 0; x < g->W; x++) {  /* Interior */
-			printf("   %c", mzn_grid_has_wall(g, y, x, east) ? '|' : ' ');
+			printf("   %c", mz_grid_has_wall(g, y, x, east) ? '|' : ' ');
 		}
 		printf("\n");
 	}
 	printf("+");
 	for (uint32_t x = 0; x < g->W; x++) {  /* South wall */
-		printf(mzn_grid_has_wall(g, g->H - 1, x, south) ? "---+" : "   +");
+		printf(mz_grid_has_wall(g, g->H - 1, x, south) ? "---+" : "   +");
 	}
 	printf("\n");
 }
 
-void mzn_out_ascii_boxchars(const struct mzn_grid_t *g)
+void mz_out_ascii_boxchars(const struct mz_grid_t *g)
 {
 	int n, e, s, w;
 	bool y0, x0, xW, yH;
@@ -48,14 +48,14 @@ void mzn_out_ascii_boxchars(const struct mzn_grid_t *g)
 		y0 = y > 0, yH = y < g->H;
 		for (uint32_t x = 0; x <= g->W; x++) {  /* Top of cell */
 			x0 = x > 0, xW = x < g->W;
-			n = (y0 && x0             && mzn_grid_has_wall(g, y - 1, x - 1,  east)) ||
-			    (y0             && xW && mzn_grid_has_wall(g, y - 1,     x,  west)) ? 8 : 0;
-			w = (y0 && x0             && mzn_grid_has_wall(g, y - 1, x - 1, south)) ||
-			    (      x0 && yH       && mzn_grid_has_wall(g,     y, x - 1, north)) ? 4 : 0;
-			s = (      x0 && yH       && mzn_grid_has_wall(g,     y, x - 1,  east)) ||
-			    (            yH && xW && mzn_grid_has_wall(g,     y,     x,  west)) ? 2 : 0;
-			e = (y0             && xW && mzn_grid_has_wall(g, y - 1,     x, south)) ||
-			    (            yH && xW && mzn_grid_has_wall(g,     y,     x, north)) ? 1 : 0;
+			n = (y0 && x0             && mz_grid_has_wall(g, y - 1, x - 1,  east)) ||
+			    (y0             && xW && mz_grid_has_wall(g, y - 1,     x,  west)) ? 8 : 0;
+			w = (y0 && x0             && mz_grid_has_wall(g, y - 1, x - 1, south)) ||
+			    (      x0 && yH       && mz_grid_has_wall(g,     y, x - 1, north)) ? 4 : 0;
+			s = (      x0 && yH       && mz_grid_has_wall(g,     y, x - 1,  east)) ||
+			    (            yH && xW && mz_grid_has_wall(g,     y,     x,  west)) ? 2 : 0;
+			e = (y0             && xW && mz_grid_has_wall(g, y - 1,     x, south)) ||
+			    (            yH && xW && mz_grid_has_wall(g,     y,     x, north)) ? 1 : 0;
 			printf("%s%s%s%s", boxchars[n + w + s + e],
 				boxchars[e != 0 ? HORIZONTAL_INDEX : 0],
 				boxchars[e != 0 ? HORIZONTAL_INDEX : 0],
@@ -66,14 +66,14 @@ void mzn_out_ascii_boxchars(const struct mzn_grid_t *g)
 			printf("\n");
 			for (uint32_t x = 0; x <= g->W; x++) {  /* Interior */
 				x0 = x > 0, xW = x < g->W;
-				n = (y0 && x0             && mzn_grid_has_wall(g, y - 1, x - 1,  east)) ||
-				    (y0             && xW && mzn_grid_has_wall(g, y - 1,     x,  west)) ? 8 : 0;
-				w = (y0 && x0             && mzn_grid_has_wall(g, y - 1, x - 1, south)) ||
-				    (      x0 && yH       && mzn_grid_has_wall(g,     y, x - 1, north)) ? 4 : 0;
-				s = (      x0 && yH       && mzn_grid_has_wall(g,     y, x - 1,  east)) ||
-				    (            yH && xW && mzn_grid_has_wall(g,     y,     x,  west)) ? 2 : 0;
-				e = (y0             && xW && mzn_grid_has_wall(g, y - 1,     x, south)) ||
-				    (            yH && xW && mzn_grid_has_wall(g,     y,     x, north)) ? 1 : 0;
+				n = (y0 && x0             && mz_grid_has_wall(g, y - 1, x - 1,  east)) ||
+				    (y0             && xW && mz_grid_has_wall(g, y - 1,     x,  west)) ? 8 : 0;
+				w = (y0 && x0             && mz_grid_has_wall(g, y - 1, x - 1, south)) ||
+				    (      x0 && yH       && mz_grid_has_wall(g,     y, x - 1, north)) ? 4 : 0;
+				s = (      x0 && yH       && mz_grid_has_wall(g,     y, x - 1,  east)) ||
+				    (            yH && xW && mz_grid_has_wall(g,     y,     x,  west)) ? 2 : 0;
+				e = (y0             && xW && mz_grid_has_wall(g, y - 1,     x, south)) ||
+				    (            yH && xW && mz_grid_has_wall(g,     y,     x, north)) ? 1 : 0;
 				printf("%s", boxchars[s != 0 ? VERTICAL_INDEX : 0]);
 				printf("   ");
 			}
@@ -82,21 +82,21 @@ void mzn_out_ascii_boxchars(const struct mzn_grid_t *g)
 	}
 }
 
-void mzn_out_ascii_boxchars_compact(const struct mzn_grid_t *g)
+void mz_out_ascii_boxchars_compact(const struct mz_grid_t *g)
 {
 	int n, e, s, w;
 	bool y0, x0, xW, yH;
 	for (uint32_t y = 0; y <= g->H; y++) {
 		for (uint32_t x = 0; (uint32_t)x <= g->W; x++) {
 			y0 = y > 0, x0 = x > 0, xW = x < g->W, yH = y < g->H;
-			n = (y0 && x0             && mzn_grid_has_wall(g, y - 1, x - 1,  east)) ||
-			    (y0             && xW && mzn_grid_has_wall(g, y - 1,     x,  west)) ? 8 : 0;
-			w = (y0 && x0             && mzn_grid_has_wall(g, y - 1, x - 1, south)) ||
-			    (      x0 && yH       && mzn_grid_has_wall(g,     y, x - 1, north)) ? 4 : 0;
-			s = (      x0 && yH       && mzn_grid_has_wall(g,     y, x - 1,  east)) ||
-			    (            yH && xW && mzn_grid_has_wall(g,     y,     x,  west)) ? 2 : 0;
-			e = (y0             && xW && mzn_grid_has_wall(g, y - 1,     x, south)) ||
-			    (            yH && xW && mzn_grid_has_wall(g,     y,     x, north)) ? 1 : 0;
+			n = (y0 && x0             && mz_grid_has_wall(g, y - 1, x - 1,  east)) ||
+			    (y0             && xW && mz_grid_has_wall(g, y - 1,     x,  west)) ? 8 : 0;
+			w = (y0 && x0             && mz_grid_has_wall(g, y - 1, x - 1, south)) ||
+			    (      x0 && yH       && mz_grid_has_wall(g,     y, x - 1, north)) ? 4 : 0;
+			s = (      x0 && yH       && mz_grid_has_wall(g,     y, x - 1,  east)) ||
+			    (            yH && xW && mz_grid_has_wall(g,     y,     x,  west)) ? 2 : 0;
+			e = (y0             && xW && mz_grid_has_wall(g, y - 1,     x, south)) ||
+			    (            yH && xW && mz_grid_has_wall(g,     y,     x, north)) ? 1 : 0;
 			printf("%s%s", boxchars[n + w + s + e], boxchars[e == 0 ? 0 : HORIZONTAL_INDEX]);
 		}
 		printf("\n");

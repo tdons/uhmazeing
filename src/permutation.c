@@ -14,7 +14,7 @@ static uint32_t fac(uint32_t x)
 	return ret;
 }
 
-static void generate_seq(struct mzn_perms_t *ps)
+static void generate_seq(struct mz_perms_t *ps)
 {
 	#define SWAP(arr, x, y) tmp = arr[x]; arr[x] = arr[y]; arr[y] = tmp;
 	uint32_t ix = 0;
@@ -53,10 +53,10 @@ static void generate_seq(struct mzn_perms_t *ps)
 	#undef SWAP
 }
 
-struct mzn_perms_t *mzn_perms_ofseq0to(uint8_t n)
+struct mz_perms_t *mz_perms_ofseq0to(uint8_t n)
 {
 	assert(((void)"n too large", n < 13));
-	struct mzn_perms_t *ps = malloc(sizeof(*ps));
+	struct mz_perms_t *ps = malloc(sizeof(*ps));
 	ps->n = n;
 	ps->sz = fac(n);
 	ps->perms = malloc(sizeof(*ps->perms) * ps->n * ps->sz);
@@ -64,7 +64,7 @@ struct mzn_perms_t *mzn_perms_ofseq0to(uint8_t n)
 	return ps;
 }
 
-void mzn_perms_destroy(struct mzn_perms_t *ps)
+void mz_perms_destroy(struct mz_perms_t *ps)
 {
 	free(ps->perms);
 }

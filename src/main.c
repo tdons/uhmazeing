@@ -49,7 +49,7 @@ static struct option long_options[] = {
 
 int main(int argc, char *argv[])
 {
-	mzn_get_entropy((void*) &seed, 8);
+	mz_get_entropy((void*) &seed, 8);
 
 	int option_index = 0, c;
 	char *end;
@@ -120,10 +120,10 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "seed = %llx\n", seed);
 	}
 
-	struct mzn_rnd_t rnd;
-	mzn_rnd_init(&rnd, seed);
+	struct mz_rnd_t rnd;
+	mz_rnd_init(&rnd, seed);
 
-	struct mzn_grid_t *g = mzn_grid_create(height, width);
+	struct mz_grid_t *g = mz_grid_create(height, width);
 
 	// Generate
 	switch (generate_method) {
@@ -131,13 +131,13 @@ int main(int argc, char *argv[])
 		if (verbose_flag) {
 			fprintf(stderr, "generate = dfs\n");
 		}
-		mzn_dfs(&rnd, g);
+		mz_dfs(&rnd, g);
 		break;
 	case kruskal:
 		if (verbose_flag) {
 			fprintf(stderr, "generate = kruskal\n");
 		}
-		mzn_kruskal(&rnd, g);
+		mz_kruskal(&rnd, g);
 		break;
 	}
 
@@ -147,19 +147,19 @@ int main(int argc, char *argv[])
 		if (verbose_flag) {
 			fprintf(stderr, "print = simple\n");
 		}
-		mzn_out_ascii_simple(g);
+		mz_out_ascii_simple(g);
 		break;
 	case compact:
 		if (verbose_flag) {
 			fprintf(stderr, "print = compact\n");
 		}
-		mzn_out_ascii_boxchars_compact(g);
+		mz_out_ascii_boxchars_compact(g);
 		break;
 	case pretty:
 		if (verbose_flag) {
 			fprintf(stderr, "print = pretty\n");
 		}
-		mzn_out_ascii_boxchars(g);
+		mz_out_ascii_boxchars(g);
 		break;
 	case null: /* no-op */ break;
 	}

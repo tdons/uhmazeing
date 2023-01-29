@@ -1,10 +1,10 @@
-#ifndef MZN_GENERATE_H
-#define MZN_GENERATE_H
+#ifndef MZ_GENERATE_H
+#define MZ_GENERATE_H
 
 #include "grid.h"
 #include "random.h"
 
-void mzn_kruskal(struct mzn_rnd_t *, struct mzn_grid_t *);
-void mzn_dfs(struct mzn_rnd_t *, struct mzn_grid_t *);
+void mz_kruskal(struct mz_rnd_t *, struct mz_grid_t *);
+void mz_dfs(struct mz_rnd_t *, struct mz_grid_t *);
 
-#endif /* #ifndef MZN_GENERATE_H */
+#endif /* #ifndef MZ_GENERATE_H */

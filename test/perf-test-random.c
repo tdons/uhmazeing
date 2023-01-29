@@ -19,10 +19,10 @@ int main()
 	} while (0);
 
 	struct timeval tval_before, tval_after, tval_result;
-	struct mzn_rnd_t rnd;
+	struct mz_rnd_t rnd;
 	uint32_t iters;
 	__unused uint32_t unused;
-	mzn_rnd_init(&rnd, 0);
+	mz_rnd_init(&rnd, 0);
 
 	printf("%u iterations of:\n", (iters = 1 << 27));
 	printf("%30s", "stdlib rand()... ");
@@ -35,7 +35,7 @@ int main()
 	printf("%30s", "xoshiro128... ");
 	START();
 	for (uint32_t i = 0; i < iters; i++) {
-		unused = mzn_rnd_next32(&rnd);
+		unused = mz_rnd_next32(&rnd);
 	}
 	STOP();
 	
@@ -53,7 +53,7 @@ int main()
 	START();
 	for (uint32_t n = 1; n < 1024; n++) {
 		for (uint32_t i = 0; i < iters; i++) {
-			unused = mzn_rnd_next(&rnd, n);
+			unused = mz_rnd_next(&rnd, n);
 		}
 	}
 	STOP();

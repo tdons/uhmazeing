@@ -40,14 +40,14 @@
 static inline uint32_t rotl(const uint32_t, int);
 static uint64_t next_seed(uint64_t);
 
-void mzn_rnd_init(struct mzn_rnd_t *rnd, uint64_t seed)
+void mz_rnd_init(struct mz_rnd_t *rnd, uint64_t seed)
 {
 	uint64_t *s = (uint64_t*) rnd->state;
 	s[0] = next_seed(seed);
 	s[1] = next_seed(s[0]);
 }
 
-uint32_t mzn_rnd_next32(struct mzn_rnd_t *rnd)
+uint32_t mz_rnd_next32(struct mz_rnd_t *rnd)
 {
 	uint32_t *s = rnd->state;
 	const uint32_t result = rotl(s[1] * 5, 7) * 9;
@@ -61,9 +61,9 @@ uint32_t mzn_rnd_next32(struct mzn_rnd_t *rnd)
 	return result;
 }
 
-uint32_t mzn_rnd_next(struct mzn_rnd_t *rnd, uint32_t n)
+uint32_t mz_rnd_next(struct mz_rnd_t *rnd, uint32_t n)
 {
-	uint32_t x = mzn_rnd_next32(rnd);
+	uint32_t x = mz_rnd_next32(rnd);
 	uint64_t m = (uint64_t)x * (uint64_t)n;
 	uint32_t l = (uint32_t)m;
 	if (l < n) {
@@ -75,7 +75,7 @@ uint32_t mzn_rnd_next(struct mzn_rnd_t *rnd, uint32_t n)
 			}
 		}
 		while (l < t) {
-			x = mzn_rnd_next32(rnd);
+			x = mz_rnd_next32(rnd);
 			m = (uint64_t)x * (uint64_t)n;
 			l = (uint32_t)m;
 		}
@@ -83,33 +83,33 @@ uint32_t mzn_rnd_next(struct mzn_rnd_t *rnd, uint32_t n)
 	return m >> 32;
 }
 
-uint32_t mzn_rnd_next2pow(struct mzn_rnd_t *rnd, uint8_t e)
+uint32_t mz_rnd_next2pow(struct mz_rnd_t *rnd, uint8_t e)
 {
 	assert(((void)"exponent too large", e < 32));
-	uint32_t x = mzn_rnd_next32(rnd);
+	uint32_t x = mz_rnd_next32(rnd);
 	uint32_t mask = ((uint32_t)1 << e) - 1;
 	return x & mask;
 }
 
-double mzn_rnd_nextdouble(struct mzn_rnd_t *rnd)
+double mz_rnd_nextdouble(struct mz_rnd_t *rnd)
 {
 	/* Copied largely from https://prng.di.unimi.it/ */ 
-	uint64_t x = (((uint64_t) mzn_rnd_next32(rnd)) << 32) | ((uint64_t) mzn_rnd_next32(rnd));
+	uint64_t x = (((uint64_t) mz_rnd_next32(rnd)) << 32) | ((uint64_t) mz_rnd_next32(rnd));
 	const union { uint64_t i; double d; } u = { .i = 0x3FFull << 52 | x >> 12 };
 	return u.d - 1.0;
 }
 
-void mzn_fisher_yates(struct mzn_rnd_t *rnd, uint32_t *arr, uint32_t sz)
+void mz_fisher_yates(struct mz_rnd_t *rnd, uint32_t *arr, uint32_t sz)
 {
         for (uint32_t i = sz - 1; i > 0; --i) {
-                uint32_t j = mzn_rnd_next(rnd, i + 1);
+                uint32_t j = mz_rnd_next(rnd, i + 1);
                 uint32_t t = arr[j];
                 arr[j] = arr[i];
                 arr[i] = t;
         }
 }
 
-bool mzn_get_entropy(void *buf, size_t n)
+bool mz_get_entropy(void *buf, size_t n)
 {
 #ifdef HAVE_GET_ENTROPY
         if (getentropy(buf, n) != 0) {

@@ -12,7 +12,7 @@ uint8_t perms4[][4] = {
 
 bool test_4()
 {
-	struct mzn_perms_t *ps = mzn_perms_ofseq0to(4);
+	struct mz_perms_t *ps = mz_perms_ofseq0to(4);
 	for (uint32_t i = 0; i < ps->sz; i++) {
 		for (uint8_t j = 0; j < ps->n; j++) {
 			if (perms4[i][j] != ps->perms[i * ps->n + j]) {

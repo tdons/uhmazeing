@@ -33,9 +33,9 @@
 
 #define __fallthrough __attribute__((fallthrough))
 
-struct mzn_grid_t *mzn_grid_create(uint32_t H, uint32_t W)
+struct mz_grid_t *mz_grid_create(uint32_t H, uint32_t W)
 {
-	struct mzn_grid_t *g = malloc(sizeof(*g));
+	struct mz_grid_t *g = malloc(sizeof(*g));
 	g->grid = calloc((H + 1) * (W + 1) - 1, sizeof(*g->grid));
 	g->H = H;
 	g->W = W;
@@ -43,7 +43,7 @@ struct mzn_grid_t *mzn_grid_create(uint32_t H, uint32_t W)
 	return g;
 }
 
-void mzn_grid_remove_wall(struct mzn_grid_t *g, uint32_t y, uint32_t x, enum mzn_wall_t c)
+void mz_grid_remove_wall(struct mz_grid_t *g, uint32_t y, uint32_t x, enum mz_wall_t c)
 {
 	assert(((void)"out of bounds", y < g->H && x < g->W));
 	uint32_t bit;
@@ -64,7 +64,7 @@ void mzn_grid_remove_wall(struct mzn_grid_t *g, uint32_t y, uint32_t x, enum mzn
 	g->grid[y * (g->W + 1) + x] |= bit;
 }
 
-bool mzn_grid_has_wall(const struct mzn_grid_t *g, uint32_t y, uint32_t x, enum mzn_wall_t c)
+bool mz_grid_has_wall(const struct mz_grid_t *g, uint32_t y, uint32_t x, enum mz_wall_t c)
 {
 	assert(((void)"out of bounds", y < g->H && x < g->W));
 	uint32_t bit;
@@ -85,7 +85,7 @@ bool mzn_grid_has_wall(const struct mzn_grid_t *g, uint32_t y, uint32_t x, enum 
 	return (g->grid[y * (g->W + 1) + x] & bit) == 0;
 }
 
-void mzn_grid_destroy(struct mzn_grid_t *g)
+void mz_grid_destroy(struct mz_grid_t *g)
 {
 	free(g->grid);
 	free(g);
