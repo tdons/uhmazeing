@@ -129,13 +129,13 @@ int main(int argc, char *argv[])
 	switch (generate_method) {
 	case dfs:
 		if (verbose_flag) {
-			fprintf(stderr, "generate: dfs\n");
+			fprintf(stderr, "generate = dfs\n");
 		}
 		mzn_dfs(&rnd, g);
 		break;
 	case kruskal:
 		if (verbose_flag) {
-			fprintf(stderr, "generate: kruskal\n");
+			fprintf(stderr, "generate = kruskal\n");
 		}
 		mzn_kruskal(&rnd, g);
 		break;
@@ -145,19 +145,19 @@ int main(int argc, char *argv[])
 	switch (output_method) {
 	case simple:
 		if (verbose_flag) {
-			fprintf(stderr, "print: simple\n");
+			fprintf(stderr, "print = simple\n");
 		}
 		mzn_out_ascii_simple(g);
 		break;
 	case compact:
 		if (verbose_flag) {
-			fprintf(stderr, "print: compact\n");
+			fprintf(stderr, "print = compact\n");
 		}
 		mzn_out_ascii_boxchars_compact(g);
 		break;
 	case pretty:
 		if (verbose_flag) {
-			fprintf(stderr, "print: pretty\n");
+			fprintf(stderr, "print = pretty\n");
 		}
 		mzn_out_ascii_boxchars(g);
 		break;

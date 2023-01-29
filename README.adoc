@@ -11,11 +11,11 @@ $ make
 
 [source,shell]
 ----
-$ # Use 0 as a random seed (default is random).  Verbose output.
+$ # Use 0 as a fixed seed for the prng (default is a random seed).
 $ ./mz -s0 -v
 seed = 0
-generate: dfs
-print: compact
+generate = dfs
+print = compact
 ┌─────────────────┬─────┬───┬─────────┐
 │ ┌─┬─────┬─────╴ ├───╴ │ ╷ ╵ ┌─┐ ┌─╴ │
 │ ╵ │ ┌─┐ ╵ ┌─────┘ ╶───┘ ├───┘ │ │ ╶─┤
