@@ -124,5 +124,7 @@ uint32_t mz_path_length(const struct mz_path_t *p)
 void mz_path_destroy(struct mz_path_t *p)
 {
 	free(p->dist);
+	free(p->prev);
+	free(p->on_shortest_path);
 	free(p);
 }
